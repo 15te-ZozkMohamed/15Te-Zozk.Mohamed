@@ -1,75 +1,104 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class SSP {
-	   // Sten, sax och påse lek. Du trycker på en av tre knappar och datorn
-	   // väljer efter slumpen
+public class SSP extends JFrame implements ActionListener {
+  JButton sten = new JButton("Sten");
+  JButton sax  = new JButton("Sax");
+  JButton påse = new JButton("Påse");
+  JPanel knappar = new JPanel();
+  JButton sten2 = new JButton("Sten");
+  JButton sax2  = new JButton("Sax");
+  JButton påse2 = new JButton("Påse");
+  JPanel knappar2 = new JPanel();
+  JLabel meddelande = new JLabel("Välj en knapp!", JLabel.CENTER);
+  int vinst, förlust;
+  JLabel vinstL   = new JLabel("Antal vinster: 0");
+  JLabel förlustL = new JLabel("Antal förluster: 0");
+  JPanel statistik = new JPanel();
 
-	   import java.awt.*;
-	   import javax.swing.*;
-	   import java.awt.event.*;
-	   import extra.*;
+  SSP() {
+    knappar.setLayout(new GridLayout(1,4));
+    knappar.add(new JLabel("Ditt val ", JLabel.RIGHT));
+    knappar.add(sten); knappar.add(sax); knappar.add(påse);
 
-	   public class Lek extends ExtendedJFrame implements ActionListener {
-	     private int vinst, förlust;
-	     private JButton sten, sax, påse;
-	     private JLabel v = new JLabel("Vinster:");
-	     private JLabel f = new JLabel("Förluster:");
-	     private JLabel vn = new JLabel("   0  ",JLabel.CENTER);
-	     private JLabel fn = new JLabel("   0  ",JLabel.CENTER);
-	     private JLabel mdrag = new JLabel("             ", JLabel.CENTER);
-	     private JLabel drag = new JLabel("             ", JLabel.CENTER);
-	     private JPanel p = new JPanel();
-	     private JPanel p1 = new JPanel();
-	     private JPanel p2 = new JPanel();
-	     private JPanel p3 = new JPanel();
+    knappar2.setLayout(new GridLayout(1,4));
+    knappar2.add(new JLabel("Datorns val ", JLabel.RIGHT));
+    knappar2.add(sten2); knappar2.add(sax2); knappar2.add(påse2);
 
-	   // sten = 0, sax = 1, påse = 2, en tabell över resultat av
-	   // olika kombinationer, 1 = vinst, -1 = förlust, 0 = oavgjort
+    statistik.setLayout(new GridLayout(1,2));
+    statistik.add(vinstL); statistik.add(förlustL);
 
-	   private int [][] tabell = {{0, 1, -1}, {-1, 0, 1}, {1, -1, 0}};
+    setLayout(new GridLayout(4,1,0,3));
+    add(knappar);
+    add(knappar2);
+    add(meddelande);
+    add(statistik);
 
-	   // sätt upp gränssnittet
+    sten.addActionListener(this);
+    sax.addActionListener(this);
+    påse.addActionListener(this);
 
-	   public Lek() {
-	      Container cont = getContentPane();
+    setSize(300,200);
+    setVisible(true);
+    setDefaultCloseOperation(EXIT_ON_CLOSE); 
+  }
 
-	      // tappat bort koden här!
+  public void actionPerformed(ActionEvent e) {
+    final int STEN=0, SAX=1, PÅSE=2;
+    int val;  
+    if (e.getSource()==sten) {
+      val = STEN;
+      sten.setBackground(Color.blue);
+      sax.setBackground(Color.lightGray);
+      påse.setBackground(Color.lightGray);
+    }
+    else if (e.getSource()==sax) {
+      val = SAX;
+      sten.setBackground(Color.lightGray);
+      sax.setBackground(Color.blue);
+      påse.setBackground(Color.lightGray);
+    }
+    else {
+      val = PÅSE; 
+      sten.setBackground(Color.lightGray);
+      sax.setBackground(Color.lightGray);
+      påse.setBackground(Color.blue);
+    }
+ 
+    int val2 = (int) (Math.random() * 3);  // Datorns val. Ger 0, 1 eller 2
+    if (val2==STEN) {
+      sten2.setBackground(Color.blue);
+      sax2.setBackground(Color.lightGray);
+      påse2.setBackground(Color.lightGray);
+    }
+    else if (val2==SAX) {
+      sten2.setBackground(Color.lightGray);
+      sax2.setBackground(Color.blue);
+      påse2.setBackground(Color.lightGray);
+    }
+    else { 
+      sten2.setBackground(Color.lightGray);
+      sax2.setBackground(Color.lightGray);
+      påse2.setBackground(Color.blue);
+    }
 
-	      pack();
-	      setVisible(true);
-	    }
-	  
-	    public void actionPerformed(ActionEvent e) {
+    if (val == val2)
+      meddelande.setText("Ni valde samma. Gör ett nytt val!");   
+    else if (val==STEN && val2==SAX  || 
+             val==SAX  && val2==PÅSE ||
+             val==PÅSE && val2==STEN) {
+      meddelande.setText("Du vann! Gör ett nytt val!");
+      vinstL.setText("Antal vinster: " + ++vinst);
+    }
+    else {
+      meddelande.setText("Du förlorade! Gör ett nytt val!");
+      förlustL.setText("Antal förluster: " + ++förlust);
+    }
 
-	      // kolla vilken knapp
-	    
-	      int val;
-	      if(e.getSource() == sten) val = 0;
-	      else if (e.getSource() == sax) val = 1;
-	      else val = 2;
-	      if (val == 0) mdrag.setText("Ditt drag: sten");
-	      else if (val == 1) mdrag.setText("Ditt drag: sax");
-	      else mdrag.setText("Ditt drag: påse");
+  }
 
-	      // låt datorn välja med hjälp av slumpen
-
-	      int d = (int) (3*Math.random());
-	      if (d == 0) drag.setText("Mitt drag: sten");
-	      else if (d == 1) drag.setText("Mitt drag: sax");
-	      else drag.setText("Mitt drag: påse");
-
-	      // kolla vinsttabellen
-
-	      if (tabell[d][val] == 1) vinst++;
-	      else if (tabell[d][val] == -1) förlust++;
-
-	      // uppdatera räknarna
-
-	      vn.setText(String.valueOf(vinst));
-	      fn.setText(String.valueOf(förlust));
-	    }
-
-	    public static void main(String [] args) {
-	      Lek l = new Lek();
-	    }
-	  }
+  public static void main(String[] arg) {
+    new SSP();
+  }
 }

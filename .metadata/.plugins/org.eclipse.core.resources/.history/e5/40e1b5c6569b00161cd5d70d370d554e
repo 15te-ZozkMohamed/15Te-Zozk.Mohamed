@@ -1,0 +1,127 @@
+import java.util.*;
+import java.io.*;
+
+/**
+* 
+* rock, papper, scissor game
+*
+*/
+public class Janken
+{
+private ArrayList<String> vinnare = new ArrayList<String>(10);
+int slumptal;
+int ange;
+int Spelomgang= 0;
+/**
+* Constructor for objects of class janken
+* 
+*/
+public Janken()
+{
+BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+Scanner s = new Scanner(inFromUser);
+
+System.out.println("Vill du spela sten sax pase? j/n");
+String val = s.next();
+
+while (val.equals("j"))
+{
+slumptal = (int) ((Math.random() * 3) +1);
+
+System.out.println("Valj sten sax påse, skriv 1 (sten), 2 (sax), 3 (pase)");
+
+val(s.nextInt());
+vemVann();
+
+System.out.println("Vill du fortsätta spela, j/n, eller se en lista över vinnare? tryck l för listan");
+val = s.next();
+if(val.equals("l"))
+{
+vemVannTidgare();
+System.out.println("Vill du fortsätta spela, j/n, eller se en lista över vinnare? tryck l för listan");
+val = s.next();
+}
+
+Spelomgang = Spelomgang +1;
+}
+s.close();
+}
+public void val(int a)
+{
+try
+{
+ange = a;
+}
+catch(NoSuchElementException e)
+{
+System.out.println("Nu blev det fel");
+System.out.println("Valj sten sax påse, skriv 1 (sten), 2 (sax), 3 (pase)");
+
+}
+}
+
+public String vad(int tal)
+{
+String tur = null;
+if(tal == 1)
+{
+tur = new String("sten");
+}
+if(tal == 2)
+{
+tur = new String("sax");
+}
+if(tal == 3)
+{
+tur = new String("påse");
+}
+return tur;
+}
+
+public void vemVann()
+{
+boolean satt=false;
+System.out.println("Datorn valde "+ vad(slumptal) + ": Du valde "+ vad(ange));
+// 1 (sten), 2 (sax), 3 (pase)
+if(slumptal < ange || (ange ==1 && slumptal == 3))
+{
+System.out.println("Du förlorade");
+satt=true;
+vinnare("Datorn");
+}
+if(!satt && ((ange < slumptal) || (slumptal ==1 && ange ==3)))
+{
+System.out.println("Du vann!");
+
+vinnare("Du");
+}
+if( ange == slumptal)
+{
+System.out.println("Det är lika");
+vinnare("Ingen");
+}
+}
+public void vinnare(String v)
+{
+if(vinnare.size() > 9)
+{
+vinnare.remove(0);
+}
+vinnare.add(v);
+}
+public void vemVannTidgare()
+{
+if(!vinnare.isEmpty())
+{
+for(int i=0;i<vinnare.size();i++)
+{
+System.out.println("Omgång "+(i+1)+": vann "+ vinnare.get(i));
+}
+}
+}
+
+public static void main(String[] args)
+{
+new Janken();
+}
+}
