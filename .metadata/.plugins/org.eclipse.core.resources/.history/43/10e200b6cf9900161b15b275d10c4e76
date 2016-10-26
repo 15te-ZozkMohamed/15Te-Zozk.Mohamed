@@ -1,0 +1,159 @@
+
+public class SSP {
+	public class Lektion4 extends JFrame implements ActionListener {
+		  final int STEN = 0, SAX = 1, PÅSE = 2;
+		  private int användarVal, datorVal, omgång;
+		  private int användarVinst, datorVinst;
+		  private JButton sten, datorSten; 
+		  private JButton sax, datorSax;  
+		  private JButton påse, datorPåse; 
+		  private JPanel  användarPanel, datorPanel, resultatPanel;
+		  private JLabel  infoLabel, resultatLabel;
+		  private JTextField användarResultat, datorResultat;
+
+		 
+		  /**
+		   * Konstruktor som initierar och nollställer fönstret
+		   */ 
+		  Lektion4() {
+		    super("Lektionsexempel 4");
+		    setSize(400, 200);
+		    omgång = 0;
+		    användarVinst = 0;
+		    datorVinst = 0;
+		    skapaGränssnitt();
+		  }//konstruktor
+
+
+
+		  /**
+		   * Metod som lägger ut spelets komponenter med hjälp av
+		   * 3 st JPanel och en java.awt.GridLayout. Med metoden
+		   * addActionListener kopplas Knapparna för användarens 
+		   * val till fönstrets händelselyssning. 
+		   */ 
+		  public void skapaGränssnitt() {
+		    Container container = getContentPane();  
+
+		    //3 knappar och 1 etikett läggs in i datorpanelen
+		    datorPanel = new JPanel();
+		    datorPanel.setLayout(new GridLayout(1,4));
+		    datorPanel.add(new JLabel("Datorn väljer:", JLabel.CENTER));
+		    datorSten = new JButton("STEN");
+		    datorSax  = new JButton("SAX");
+		    datorPåse = new JButton("PÅSE");
+		    datorPanel.add(datorSten); 
+		    datorPanel.add(datorSax); 
+		    datorPanel.add(datorPåse);
+		    container.add("North", datorPanel);
+
+		    //3 knappar och 1 etikett läggs in i användarpanelen
+		    //dessa knappar ska också ha lyssnare som reagerar på musklick
+		    användarPanel = new JPanel();
+		    användarPanel.setLayout(new GridLayout(1,4));
+		    användarPanel.add(new JLabel("Du väljer här:", JLabel.CENTER));
+		    sten = new JButton("STEN");
+		    sax  = new JButton("SAX");
+		    påse = new JButton("PÅSE");
+		    sten.addActionListener(this);
+		    sax.addActionListener(this);
+		    påse.addActionListener(this);
+		    användarPanel.add(sten); 
+		    användarPanel.add(sax); 
+		    användarPanel.add(påse);
+		    container.add("South", användarPanel);
+
+		    //I centrum läggs en panel som visar resultatet
+		    resultatPanel = new JPanel(new GridLayout(2,2));  
+		    resultatPanel.setBackground(new Color(255,204,0));
+		    användarResultat = new JTextField(" Dina vinster:  ");
+		    resultatPanel.add(användarResultat);
+		    datorResultat = new JTextField(" Datorns vinster:  ");
+		    resultatPanel.add(datorResultat);
+		    infoLabel = new JLabel("Börja spela genom att ", JLabel.RIGHT);
+		    resultatPanel.add(infoLabel);    
+		    resultatLabel = new JLabel("använda knapparna längst ner!", JLabel.LEFT);
+		    resultatPanel.add(resultatLabel); 
+		    container.add("Center",resultatPanel);
+
+		    setVisible(true);
+		    setDefaultCloseOperation(EXIT_ON_CLOSE); 
+		  }//skapaGränssnitt
+
+
+		  /**
+		   * Implementationen av den händelselyssnande metoden
+		   * från interfacet ActionListener. Här kontrolleras
+		   * på vilken knapp som användaren har klickat.
+		   */ 
+		  public void actionPerformed(ActionEvent e) {
+		    int val;
+		   
+		    if (e.getSource() == sten) {
+		       val = STEN;       
+		    }
+		    else if (e.getSource() == sax) {
+		      val = SAX;
+		    }
+		    else {
+		      val = PÅSE; 
+		    }
+		    evaluera(val);
+
+		  }//actionPerformed
+
+
+		  /**
+		   * Datorns spelval slumpas fram och jämförs med användarens 
+		   * val (metodens argument). Spelresultatet lagras och visas
+		   * i användargränssnittet.   
+		   */  
+		  public void evaluera(int val){
+		 
+		    //hämta in användarens val
+		    användarVal = val;     
+
+		    //slumpa fram datorns val och typa om till integer
+		    datorVal = (int)(Math.random() * 3);
+
+		    //visa datorns val  
+		    if (datorVal == STEN) {
+		      datorSten.setBackground(Color.red);
+		      datorSax.setBackground(Color.lightGray);
+		      datorPåse.setBackground(Color.lightGray);
+		    }
+		    else if (datorVal == SAX) {
+		      datorSten.setBackground(Color.lightGray);
+		      datorSax.setBackground(Color.red);
+		      datorPåse.setBackground(Color.lightGray);
+		    }
+		    else { 
+		      datorSten.setBackground(Color.lightGray);
+		      datorSax.setBackground(Color.lightGray);
+		      datorPåse.setBackground(Color.red);
+		    }
+		 
+		    //visa resultatet  
+		    resultatLabel.setHorizontalAlignment(0); 
+		    infoLabel.setHorizontalAlignment(0);    
+		    infoLabel.setText("RESULTAT omgång " + ++omgång +":");  
+		    if (användarVal == datorVal)
+		      resultatLabel.setText("Oavgjort, ingen får poäng!");   
+		    else if (användarVal == STEN  &&  datorVal == SAX  || 
+		             användarVal == SAX   &&  datorVal == PÅSE ||
+		             användarVal == PÅSE  &&  datorVal == STEN) {
+		      resultatLabel.setText("Du vinner! En gång till?");
+		      användarResultat.setText(" Dina vinster: " + ++användarVinst + "st");
+		    }
+		    else {
+		      resultatLabel.setText(" Du förlorade! Gör ett nytt val!");
+		      datorResultat.setText(" Datorns vinster: " + ++datorVinst + "st");
+		    }
+		  }//evaluera
+
+		  public static void main(String[] arg) {
+		    new Lektion4();
+		  }
+
+		}
+}
