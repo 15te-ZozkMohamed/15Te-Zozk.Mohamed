@@ -1,19 +1,16 @@
 import java.awt.*;
-/**
- * Krypteringsobjekt
- * Krypterar/dekrypterar enligt ADFGVX algoritmen
- * 
- * @author marie 
- * @version PP040601
- */
+
+ //Krypteringsobjekt
+ //Krypterar/dekrypterar enligt ADFGVX algoritmen
+
 public class Krypto
 {
-    private String krypto = "yen29rx8htosk54m0juflz3adbvc6pgiqw17";//för att få tillgång till samma flera gånger :-)    
+    private String krypt = "yen29rx8htosk54m0juflz3adbvc6pgiqw17";//fÂr att fÂ tillgång till samma flera gÂnger  
     private final String code = "ADFGVX";
     
     public Krypto()
     {
-        krypto = "abcdefghijklmnopqrstuvwxyz0123456789" ;
+        krypt = "abcdefghijklmnopqrstuvwxyz0123456789" ;
         
         //Scramble
         for (int i = 0; i < 100; i++)
@@ -23,20 +20,19 @@ public class Krypto
         
     }//Krypt
     
-    public Krypto(int fusk) //ger samma krypto varje gång!
+    public Krypto(int fusk) //ger samma krypto varje gÂng!
     {
     }//Krypto
     
-	/**
-	 * Kryptering enligt ADFGVX algoritmen
-	 * 
-	 * @param  String s   Den sträng som skall krypteras
-	 * @return String     Den krypterade strängen 
-	 */
+	 //Kryptering enligt ADFGVX algoritmen
+	
+	 //Den string som skall krypteras
+	 //Den krypterade stringen 
+	
 	public String encrypt(String s)
 	{
 		Point p;
-		String res = ""; //Tomma strängen
+		String res = ""; //Tomma stringen
 		for (int i = 0; i < s.length(); i++)
 		{
 		    p = indexOf(s.charAt(i));
@@ -45,45 +41,38 @@ public class Krypto
 		return res; 
 	}
 	
-	/**
-	 * Dekryptering enligt ADFGVX algoritmen
-	 * 
-	 * @param  String s   Den sträng som skall dekrypteras
-	 * @return String     Den dekrypterade strängen 
-	 */
+	 //Dekryptering enligt ADFGVX algoritmen
+	
+	 //@param  String s   Den string som skall dekrypteras
+	 //@return String     Den dekrypterade stringen 
+
 	public String decrypt(String s)
 	{
-		String res = ""; //Tomma strängen
+		String res = ""; //Tomma stringen
 		Point p;
 		for (int i = 0; i < s.length(); i = i + 2)
 		{
 		    //ta fram paret som representerar ett tecken och deras index 0..5
 		    p = new Point(code.indexOf(s.substring(i,i+1)),
 		                  code.indexOf(s.substring(i+1,i+2)));
-		    res = res + krypto.charAt(p.x*6+p.y);
+		    res = res + krypt.charAt(p.x*6+p.y);
 		}
 		return res;
 	}
 
-	/**
-	 * randomPos
-	 * 
-	 * @return     random point in [0..5,0..5]
-	 */
+	//random point in [0..5,0..5]
+	
 	private int randomPos()
 	{
-		return (int) (Math.random()*(krypto.length()));
+		return (int) (Math.random()*(krypt.length()));
 	}//rand
 	
-	/**
-	 * indexOf
-	 * 
-	 * @param  char c   Det tecken som söks i tabellen
-	 * @return    rad- och kolumnindex för givet tecken
-	 */
+	//Det tecken som söks i tabellen
+	 //rad- och kolumnindex fÂr givet tecken
+
 	private Point indexOf(char c)
 	{
-        int index = krypto.indexOf(c);
+        int index = krypt.indexOf(c);
         
         int i = index/6; // radindex
         int j = index%6; // kolindex
@@ -100,8 +89,8 @@ public class Krypto
             p2 = t;
         }
         if ( p1 != p2)
-            krypto = krypto.substring(0,p1) + krypto.substring(p2,p2+1) + krypto.substring(p1+1,p2) + 
-                   krypto.charAt(p1) + krypto.substring(p2+1,krypto.length());
+            krypt = krypt.substring(0,p1) + krypt.substring(p2,p2+1) + krypt.substring(p1+1,p2) + 
+                   krypt.charAt(p1) + krypt.substring(p2+1,krypt.length());
     }//swap
     
     public void printKrypto()
@@ -117,7 +106,7 @@ public class Krypto
         {
            System.out.print(code.charAt(i)+"\t");
            for (int j = 0; j < 6; j++)
-                System.out.print(krypto.charAt(i*6+j)+"\t");
+                System.out.print(krypt.charAt(i*6+j)+"\t");
            System.out.println();
         }
         
