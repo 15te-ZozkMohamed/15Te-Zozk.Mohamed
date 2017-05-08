@@ -19,11 +19,11 @@ public class SSP extends JFrame implements ActionListener {
 
   SSP() {
     knappar.setLayout(new GridLayout(1,4));
-    knappar.add(new JLabel("Ditt val ", JLabel.RIGHT));
+    knappar.add(new JLabel("Ditt val: ", JLabel.RIGHT));
     knappar.add(sten); knappar.add(sax); knappar.add(påse);
 
     knappar2.setLayout(new GridLayout(1,4));
-    knappar2.add(new JLabel("Datorns val ", JLabel.RIGHT));
+    knappar2.add(new JLabel("Datorns val: ", JLabel.RIGHT));
     knappar2.add(sten2); knappar2.add(sax2); knappar2.add(påse2);
 
     statistik.setLayout(new GridLayout(1,2));
@@ -41,7 +41,20 @@ public class SSP extends JFrame implements ActionListener {
 
     setSize(300,200);
     setVisible(true);
-    setDefaultCloseOperation(EXIT_ON_CLOSE); 
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    
+    sten.setForeground(Color.white);
+    sten.setBackground(Color.lightGray);
+    sax.setForeground(Color.white);
+    sax.setBackground(Color.lightGray);
+    påse.setForeground(Color.white);
+    påse.setBackground(Color.lightGray);
+    sten2.setForeground(Color.white);
+    sten2.setBackground(Color.lightGray);
+    sax2.setForeground(Color.white);
+    sax2.setBackground(Color.lightGray);
+    påse2.setForeground(Color.white);
+    påse2.setBackground(Color.lightGray);
   }
 
   public void actionPerformed(ActionEvent e) {
@@ -49,50 +62,54 @@ public class SSP extends JFrame implements ActionListener {
     int val;  
     if (e.getSource()==sten) {
       val = STEN;
-      sten.setBackground(Color.blue);
+      sten.setBackground(Color.orange);
       sax.setBackground(Color.lightGray);
       påse.setBackground(Color.lightGray);
     }
+    
     else if (e.getSource()==sax) {
       val = SAX;
       sten.setBackground(Color.lightGray);
-      sax.setBackground(Color.blue);
+      sax.setBackground(Color.orange);
       påse.setBackground(Color.lightGray);
     }
+    
     else {
       val = PÅSE; 
       sten.setBackground(Color.lightGray);
       sax.setBackground(Color.lightGray);
-      påse.setBackground(Color.blue);
+      påse.setBackground(Color.orange);
     }
  
     int val2 = (int) (Math.random() * 3);  // Datorns val. Ger 0, 1 eller 2
     if (val2==STEN) {
-      sten2.setBackground(Color.blue);
+      sten2.setBackground(Color.orange);
       sax2.setBackground(Color.lightGray);
       påse2.setBackground(Color.lightGray);
     }
+    
     else if (val2==SAX) {
       sten2.setBackground(Color.lightGray);
-      sax2.setBackground(Color.blue);
+      sax2.setBackground(Color.orange);
       påse2.setBackground(Color.lightGray);
     }
+    
     else { 
       sten2.setBackground(Color.lightGray);
       sax2.setBackground(Color.lightGray);
-      påse2.setBackground(Color.blue);
+      påse2.setBackground(Color.orange);
     }
 
     if (val == val2)
-      meddelande.setText("Ni valde samma. Gör ett nytt val!");   
+      meddelande.setText("Ni valde samma, Vänligen och gör ett nytt val!");   
     else if (val==STEN && val2==SAX  || 
              val==SAX  && val2==PÅSE ||
              val==PÅSE && val2==STEN) {
-      meddelande.setText("Du vann! Gör ett nytt val!");
+      meddelande.setText("Grattis! Du vann, vänligen gör ett nytt val!");
       vinstL.setText("Antal vinster: " + ++vinst);
     }
     else {
-      meddelande.setText("Du förlorade! Gör ett nytt val!");
+      meddelande.setText("Du förlorade, väligen gör ett nytt val!");
       förlustL.setText("Antal förluster: " + ++förlust);
     }
 

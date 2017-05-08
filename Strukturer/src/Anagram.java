@@ -17,8 +17,8 @@ public class Anagram {
 			for (char c : str.toCharArray()) {
 				chars.add(c);
 			}
-			for (int x=0;x< chars.size();x++)
-				System.out.println(x+": "+chars.get(x));
+//			for (int x=0;x< chars.size();x++)
+//				System.out.println(x+": "+chars.get(x));
 
 			String newString = new String();
 			while (!chars.isEmpty()) {
